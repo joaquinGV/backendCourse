@@ -1,20 +1,29 @@
 [
-	{
-		"title": "producto prueba",
-		"description": "Este es un producto prueba",
-		"price": 55,
-		"thumbnail": "Sin imagen",
-		"code": "abd123",
-		"stock": 25,
-		"id": 1
-	},
-	{
-		"title": "Plato",
-		"description": "Plato de ceramica",
-		"price": 45,
-		"thumbnail": "Sin imagen",
-		"code": "plato12",
-		"stock": 25,
-		"id": 2
-	}
+  {
+    "title": "producto prueba",
+    "description": "Este es un producto prueba",
+    "price": 55,
+    "thumbnail": "Sin imagen",
+    "code": "abd123",
+    "stock": 25,
+    "id": 1
+  },
+  {
+    "title": "Plato",
+    "description": "Plato de ceramica",
+    "price": 45,
+    "thumbnail": "Sin imagen",
+    "code": "plato12",
+    "stock": 25,
+    "id": 2
+  },
+  {
+    "title": "Set de platos",
+    "description": "Juego de platos",
+    "price": 445,
+    "thumbnail": "Sin imagen",
+    "code": "plato123",
+    "stock": 25,
+    "id": 3
+  }
 ]
