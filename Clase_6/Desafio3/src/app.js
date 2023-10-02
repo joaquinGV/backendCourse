@@ -53,9 +53,6 @@ app.post("/products", async (req, res) => {
     await manager.addProduct(title, description, price, thumbnail, code, stock);
     res.status(201).send({ status: "success", message: "product created" });
   }
-
-  //Deberiamos retornar un 201, porque estamos creando un nuevo recurso
-  res.status(201).send({ status: "success", message: "user created" });
 });
 
 //Actualización de un producto
