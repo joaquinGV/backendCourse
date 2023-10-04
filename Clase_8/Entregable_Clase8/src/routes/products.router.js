@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { uploader } from "../utils.js";
 import productManager from "../manager/product.manager.js";
 import { __dirname } from "../utils.js";
 

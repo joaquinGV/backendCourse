@@ -1,16 +1,20 @@
 import { Router } from "express";
 import productManager from "../manager/product.manager.js";
-import { __dirname } from "../utils.js";
+import __dirname from "../utils.js";
 
 const router = Router();
 
-const manager = new productManager("../files/productos.json");
+const manager = new productManager(`${__dirname}/files/products.json`);
 
 //Obtener el listado de mascotas
 router.get("/", async (req, res) => {
   const limit = req.query.limit;
   const products = await manager.getProducts();
+  // console.log(products);
 
+  if (!products) {
+    res.send({ status: "Error", payload: [] });
+  }
   if (limit == undefined) {
     res.send({ status: "success", payload: products }); // send all products
   } else {
@@ -24,7 +28,8 @@ router.get("/", async (req, res) => {
 
 router.get("/:pid", async (req, res) => {
   const id = +req.params.pid;
-  const product = await manager.getProductById(pid);
+  // console.log(id);
+  const product = await manager.getProductById(id);
 
   if (product != null) {
     res.send({ status: "success", payload: product });
@@ -82,6 +87,18 @@ router.put("/:pid", async (req, res) => {
 
   if (msg) {
     res.send({ status: "success", message: "product updated" });
+  } else {
+    res.status(404).send({ status: "error", error: "user not found" });
+  }
+});
+
+router.delete("/:pid", async (req, res) => {
+  const pid = Number(req.params.pid);
+
+  const msg = await manager.deleteProduct(pid);
+
+  if (msg) {
+    res.send({ status: "success", message: "product deleted" });
   } else {
     res.status(404).send({ status: "error", error: "user not found" });
   }

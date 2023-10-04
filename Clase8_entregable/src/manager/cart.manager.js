@@ -18,7 +18,7 @@ export default class cartManager {
     }
   };
 
-  addCart = async (products) => {
+  addCart = async (products = []) => {
     try {
       // obtener lista de cartos
       const carts = await this.getCarts();
@@ -46,9 +46,9 @@ export default class cartManager {
       // obtener lista de cartos
       const carts = await this.getCarts();
 
-      const cartSearch = carts.findIndex((prod) => prod.id === cartID);
+      const cartSearch = carts.findIndex((cart) => cart.id === cartID);
       if (cartSearch === -1) {
-        new Error("carto No encontrado");
+        new Error("cart no encontrado");
         return null;
       } else {
         return carts[cartSearch];
@@ -58,77 +58,71 @@ export default class cartManager {
     }
   };
 
-  updateCart = async (cartID, objActualizado) => {
-    const { products } = objActualizado;
+  // updateCart = async (cartID, productId) => {
+  //   // const { product } = productId;
+  //   try {
+  //     // obtener lista de cartos
+  //     const carts = await this.getCarts();
 
-    // console.log(title, description, price, thumbnail, code, stock);
+  //     const cartSearch = carts.findIndex((cart) => cart.id === cartID);
+  //     if (cartSearch === -1) {
+  //       new Error("carto No encontrado");
+  //       return null;
+  //     } else {
+  //       const prodSearch = carts[cartSearch].products.findIndex(
+  //         (prod) => prod.id === productId
+  //       );
+  //       if (prodSearch == -1) {
+  //         carts[cartSearch].products.productId += 1;
+  //       } else {
+  //         carts[cartSearch].products.productId = 1;
+  //       }
 
-    try {
-      // obtener lista de cartos
-      const carts = await this.getCarts();
+  //       // carts[cartSearch] = updatedcart;
 
-      const cartSearch = carts.findIndex((prod) => prod.id === cartID);
-      if (cartSearch === -1) {
-        new Error("carto No encontrado");
-        return null;
-      } else {
-        const updatedcart = {
-          ...carts[cartSearch],
-          ...(title !== undefined && { title }),
-          ...(description !== undefined && { description }),
-          ...(price !== undefined && { price }),
-          ...(thumbnail !== undefined && { thumbnail }),
-          ...(code !== undefined && { code }),
-          ...(stock !== undefined && { stock }),
-        };
-        console.log(updatedcart);
+  //       await fs.promises.writeFile(
+  //         this.path,
+  //         JSON.stringify(carts, null, "\t")
+  //       );
+  //       return "Update con Exito";
+  //     }
+  //   } catch (err) {
+  //     console.log(
+  //       `Error actualizando el carto con ID ${id} en el path:  ${this.path} | `,
+  //       err
+  //     );
+  //   }
+  // };
 
-        carts[cartSearch] = updatedcart;
+  // deleteCart = async (cartID) => {
+  //   try {
+  //     // obtener lista de cartos
+  //     const carts = await this.getCarts();
 
-        await fs.promises.writeFile(
-          this.path,
-          JSON.stringify(carts, null, "\t")
-        );
-        return "Update con Exito";
-      }
-    } catch (err) {
-      console.log(
-        `Error actualizando el carto con ID ${id} en el path:  ${this.path} | `,
-        err
-      );
-    }
-  };
+  //     const cartSearch = carts.findIndex((prod) => prod.id === cartID);
+  //     if (cartSearch === -1) {
+  //       new Error("carto No encontrado");
+  //       return null;
+  //     } else {
+  //       carts.splice(cartSearch, 1);
 
-  deleteCart = async (cartID) => {
-    try {
-      // obtener lista de cartos
-      const carts = await this.getCarts();
-
-      const cartSearch = carts.findIndex((prod) => prod.id === cartID);
-      if (cartSearch === -1) {
-        new Error("carto No encontrado");
-        return null;
-      } else {
-        carts.splice(cartSearch, 1);
-
-        await fs.promises.writeFile(
-          this.path,
-          JSON.stringify(carts, null, "\t")
-        );
-        return "Delete con Exito";
-      }
-    } catch (err) {
-      console.log(
-        `Error Borrando el carto con ID ${id} en el path:  ${this.path} | `,
-        err
-      );
-    }
-  };
+  //       await fs.promises.writeFile(
+  //         this.path,
+  //         JSON.stringify(carts, null, "\t")
+  //       );
+  //       return "Delete con Exito";
+  //     }
+  //   } catch (err) {
+  //     console.log(
+  //       `Error Borrando el carto con ID ${id} en el path:  ${this.path} | `,
+  //       err
+  //     );
+  //   }
+  // };
 
   saveCart = async (cartsUpdate) => {
     try {
       // obtener lista de cartos y actualizarlos en el archivo
-
       await fs.promises.writeFile(
         this.path,
         JSON.stringify(cartsUpdate, null, "\t")
