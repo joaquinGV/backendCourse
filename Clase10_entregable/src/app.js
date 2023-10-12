@@ -1,9 +1,7 @@
 import express from "express";
 import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
 import __dirname from "./utils.js";
-import viewsRouter from "./routes/views.router.js";
-import realtimeproductsRouter from "./routes/realTimeProducts.router.js";
+import viewsRouter from "./routes/web/views.router.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 
@@ -21,22 +19,21 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
 //Routes
-app.use("/api/carts", cartsRouter);
+app.use("/realtimeproducts", viewsRouter);
 app.use("/api/products", productsRouter);
-app.use("/", viewsRouter);
-app.use("/realtimeproducts", realtimeproductsRouter);
 
 const server = app.listen(8080, () => console.log("Server running"));
 
 //Socket io
-const socketServer = new Server(server);
+const io = new Server(server);
 
-const logs = [];
+app.set("socketio", io);
 
-socketServer.on("connection", (socket) => {
-  console.log("Nuevo cliente conectado");
+io.on("connection", (socket) => {
+  console.log("Nuevo usuario conectado");
 });
 
-socketServer.on("connection2", (socket) => {
-  console.log("Nuevo cliente conectado en realtime");
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
 });

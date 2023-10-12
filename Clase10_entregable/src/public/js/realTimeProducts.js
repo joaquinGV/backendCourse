@@ -1,29 +1,25 @@
 const socket = io();
 
-const input = document.getElementById('textbox');
-const log = document.getElementById('log');
+const form = document.getElementById("form");
 
-// input.addEventListener('keyup', evt => {
-//     const { key } = evt;
-//     socket.emit('message1', key);
-// });
+const container = document.getElementById("container");
 
-// socket.on('log', data => {
-//     log.innerHTML+=data;
-// });
+socket.on("showProducts", (data) => {
+  container.innerHTML = ``;
+  console.log(data);
 
-input.addEventListener('keyup', evt => {
-    if(evt.key==='Enter') {
-        socket.emit('message2', input.value);
-        input.value=''
-    }
-});
-
-socket.on('log', data => {
-    let logs = '';
-    data.logs.forEach(log => {
-        logs += `${log.socketid} dice: ${log.message}<br/>`
-    });
-
-    log.innerHTML = logs;
+  data.forEach((prod) => {
+    container.innerHTML += `
+            <ul>
+                <li>title: ${prod.title}</li> 
+                <li>description: ${prod.description}</li>
+                <li>code: ${prod.code}</li>
+                <li>price: ${prod.price}</li>
+                <li>status: ${prod.status}</li>
+                <li>stock: ${prod.stock}</li>
+                <li>category: ${prod.category}</li>
+                <li>id: ${prod.id}</li>
+            </ul>
+        `;
+  });
 });
