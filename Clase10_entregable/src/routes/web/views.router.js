@@ -9,7 +9,7 @@ const manager = new productManager(`${__dirname}/files/products.json`);
 router.get("/", async (req, res) => {
   try {
     const products = await manager.getProducts();
-    console.log(products);
+    // console.log(products);
     const io = req.app.get("socketio");
     io.emit("showProducts", products);
     res.render("realTimeProducts", { products });

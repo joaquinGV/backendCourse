@@ -6,7 +6,7 @@ const container = document.getElementById("container");
 
 socket.on("showProducts", (data) => {
   container.innerHTML = ``;
-  console.log(data);
+//   console.log(data);
 
   data.forEach((prod) => {
     container.innerHTML += `

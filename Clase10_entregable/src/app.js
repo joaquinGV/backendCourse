@@ -2,6 +2,7 @@ import express from "express";
 import productsRouter from "./routes/products.router.js";
 import __dirname from "./utils.js";
 import viewsRouter from "./routes/web/views.router.js";
+import indexRouter from "./routes/web/index.router.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 
@@ -21,6 +22,7 @@ app.set("view engine", "handlebars");
 //Routes
 app.use("/realtimeproducts", viewsRouter);
 app.use("/api/products", productsRouter);
+app.use("/", indexRouter);
 
 const server = app.listen(8080, () => console.log("Server running"));
 

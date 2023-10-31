@@ -10,7 +10,7 @@ const manager = new productManager(`${__dirname}/files/products.json`);
 router.get("/", async (req, res) => {
   const limit = req.query.limit;
   const products = await manager.getProducts();
-  console.log(products);
+  // console.log(products);
 
   const io = req.app.get("socketio");
   io.emit("showProducts", await manager.getProducts());
