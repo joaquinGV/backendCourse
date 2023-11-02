@@ -14,9 +14,4 @@ export default class Messages {
     const result = await messagesModel.create(message);
     return result;
   };
-
-  update = async (id, message) => {
-    const result = await messagesModel.updateOne({ _id: id }, message);
-    return result;
-  };
 }

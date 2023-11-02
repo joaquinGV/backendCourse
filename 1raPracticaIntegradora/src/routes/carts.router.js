@@ -15,15 +15,14 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { id, products } = req.body;
-    if (!id || !products) {
+    const { products } = req.body;
+    if (!products) {
       return res
         .status(400)
         .send({ status: "error", message: "incomplete data" });
     }
 
     const result = await cartsManager.save({
-      id,
       products,
     });
 
@@ -35,22 +34,21 @@ router.post("/", async (req, res) => {
 
 router.put("/:cid", async (req, res) => {
   try {
-    const { id, products } = req.body;
+    const { products } = req.body;
     const { cid } = req.params;
-    if (!id || !products) {
+    if (!products) {
       return res
         .status(400)
         .send({ status: "error", message: "incomplete data" });
     }
 
     const result = await cartsManager.update(cid, {
-      id,
       products,
     });
 
     res.send({ status: "success", payload: result });
   } catch (error) {
-    res.status(500).send({ status: "errror", message: error.message });
+    res.status(500).send({ status: "error", message: error.message });
   }
 });
 

@@ -16,7 +16,6 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const {
-      id,
       title,
       description,
       code,
@@ -27,7 +26,6 @@ router.post("/", async (req, res) => {
       thumbnails,
     } = req.body;
     if (
-      !id ||
       !title ||
       !description ||
       !code ||
@@ -42,7 +40,6 @@ router.post("/", async (req, res) => {
     }
 
     const result = await productsManager.save({
-      id,
       title,
       description,
       code,
@@ -62,7 +59,6 @@ router.post("/", async (req, res) => {
 router.put("/:pid", async (req, res) => {
   try {
     const {
-      id,
       title,
       description,
       code,
@@ -74,7 +70,6 @@ router.put("/:pid", async (req, res) => {
     } = req.body;
     const { pid } = req.params;
     if (
-      !id ||
       !title ||
       !description ||
       !code ||
@@ -89,7 +84,6 @@ router.put("/:pid", async (req, res) => {
     }
 
     const result = await productsManager.update(pid, {
-      id,
       title,
       description,
       code,

@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 const productsCollection = "products";
 
 const productsSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
+  // id: {
+  //   type: Number,
+  //   required: true,
+  //   unique: true,
+  // },
   title: {
     type: String,
     required: true,
@@ -25,7 +26,6 @@ const productsSchema = new mongoose.Schema({
   },
   status: {
     type: Boolean,
-    required: true,
     default: true,
   },
   stock: {

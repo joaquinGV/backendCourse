@@ -1,7 +1,11 @@
 <div>
     <h1>Chat grupal</h1>
-    <input id="textbox">
-    <p id="log"></p>
+    <input id="user" placeholder="User">
+    <input id="textbox" placeholder="message">
+    <input type="Submit" id="input">
+    {{#each messages}}
+        <p>{{this.user}} dice: {{this.message}}</p>
+    {{/each}}
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/home.js"></script>

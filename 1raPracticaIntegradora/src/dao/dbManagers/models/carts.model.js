@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 const cartsCollection = "carts";
 
 const cartsSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
+  // id: {
+  //   type: Number,
+  //   required: true,
+  // },
   products: {
     type: Array,
     required: true,
