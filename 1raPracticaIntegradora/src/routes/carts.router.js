@@ -1,13 +1,13 @@
 import { Router } from "express";
-import Courses from "../dao/dbManagers/courses.managers";
+import Carts from "../dao/dbManagers/carts.manager.js";
 
 const router = Router();
-const coursesManager = new Courses();
+const cartsManager = new Carts();
 
 router.get("/", async (req, res) => {
   try {
-    const courses = coursesManager.getAll();
-    res.send({ status: "success", payload: courses });
+    const carts = cartsManager.getAll();
+    res.send({ status: "success", payload: carts });
   } catch (error) {
     res.status(500).send({ status: "errror", message: error.message });
   }
@@ -15,17 +15,16 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { title, description, teacher } = req.body;
-    if (!title || !description || !teacher) {
+    const { id, products } = req.body;
+    if (!id || !products) {
       return res
         .status(400)
         .send({ status: "error", message: "incomplete data" });
     }
 
-    const result = await coursesManager.save({
-      title,
-      description,
-      teacher,
+    const result = await cartsManager.save({
+      id,
+      products,
     });
 
     res.status(201).send({ status: "success", payload: result });
@@ -34,20 +33,19 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:cid", async (req, res) => {
   try {
-    const { title, description, teacher } = req.body;
-    const { id } = req.params;
-    if (!title || !description || !teacher) {
+    const { id, products } = req.body;
+    const { cid } = req.params;
+    if (!id || !products) {
       return res
         .status(400)
         .send({ status: "error", message: "incomplete data" });
     }
 
-    const result = await coursesManager.update(id, {
-      title,
-      description,
-      teacher,
+    const result = await cartsManager.update(cid, {
+      id,
+      products,
     });
 
     res.send({ status: "success", payload: result });

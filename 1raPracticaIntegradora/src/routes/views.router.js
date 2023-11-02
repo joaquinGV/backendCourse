@@ -1,26 +1,26 @@
-import { Router } from 'express';
-import Students from "../dao/dbManagers/students.managers.js"
-import Courses from "../dao/dbManagers/courses.managers.js"
+import { Router } from "express";
+import Products from "../dao/dbManagers/products.managers.js";
+import Carts from "../dao/dbManagers/carts.managers.js";
 
 const router = Router();
 
-const studentsManager = new Students();
-const coursesManager = new Courses();
+const productsManager = new Products();
+const cartsManager = new Carts();
 
-router.get("/students-view", async (req ,res) => {
-    try {
-        const students = await studentsManager.getAll();
-        res.render('students', {students})
-    } catch (error) {
-        console.log(error.message)
-    }
-})
+router.get("/products-view", async (req, res) => {
+  try {
+    const products = await productsManager.getAll();
+    res.render("products", { products });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
 
-router.get("/courses-view", async (req ,res) => {
-    try {
-        const courses = await coursesManager.getAll();
-        res.render('courses', {courses})
-    } catch (error) {
-        console.log(error.message)
-    }
-})
+router.get("/carts-view", async (req, res) => {
+  try {
+    const carts = await cartsManager.getAll();
+    res.render("carts", { carts });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
