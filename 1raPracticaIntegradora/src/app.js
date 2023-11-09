@@ -7,6 +7,9 @@ import handlebars from "express-handlebars";
 import mongoose from "mongoose";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
+import Messages from "./dao/dbManagers/messages.manager.js";
+
+const messagesManager = new Messages();
 
 const app = express();
 
@@ -40,7 +43,14 @@ const server = app.listen(8080, () => console.log("Server running"));
 const socketServer = new Server(server);
 
 socketServer.on("connection", (socket) => {
-  socket.on("addMessage", (data) => {
-    console.log("Mensaje añadido", data);
+  socket.on("addMessage", async (data) => {
+    try {
+      await messagesManager.save(data);
+      const messages = await messagesManager.getAll();
+      socketServer.emit("updateMessages", messages);
+      // console.log("Mensaje añadido", data);
+    } catch (error) {
+      console.error("Error adding message:", error.message);
+    }
   });
 });

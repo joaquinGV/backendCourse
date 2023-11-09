@@ -13,24 +13,21 @@ input.addEventListener("click", (evt) => {
     };
 
     socket.emit("addMessage", data);
+  }
+});
 
-    const url = "/api/messages";
+socket.on("updateMessages", (messages) => {
+  const chat = document.getElementById("chat");
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-
-    fetch(url, options)
-      .then((response) => response.json())
-      .then((data) => {
-        // Manejar la respuesta del servidor
-        console.log(data);
-        // Puedes realizar acciones adicionales aquí según la respuesta del servidor
-      })
-      .catch((error) => console.error("Error:", error));
+  chat.innerHTML = "";
+  if (messages.length > 0) {
+    messages.forEach((message) => {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+      messageDiv.innerHTML = `<p class="user"> ${message.user} dice: ${message.message} </p>`;
+      chat.appendChild(messageDiv);
+    });
+  } else {
+    chat.innerHTML = `<h1 class="message"> No se encontraron Mensajes </p>`;
   }
 });
