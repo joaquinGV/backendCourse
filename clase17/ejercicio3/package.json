@@ -1,5 +1,5 @@
 {
-  "name": "clase8_entregable",
+  "name": "ejercicio3",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,7 +13,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
-    "mongoose": "^8.0.0",
+    "mongoose": "^7.6.4",
     "mongoose-paginate-v2": "^1.7.4"
   }
 }
