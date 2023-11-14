@@ -1,15 +1,13 @@
 <div>
     <p>Renderizado: </p>
     {{#each products}}
-        {{#if this.status}}
-            <div class="productData">
-                <h3>{{this.title}}</h3>
-                <p>Precio: ${{this.price}}</p>
-                <p>Unidades: {{this.stock}}</p>
-                <p>Categoria: {{this.category}}</p>
-                <button id="addButton" value={{this._id}}>Agregar al Carrito</button>
-             </div>
-        {{/if}}
+        <div class="productData">
+            <h3>{{title}}</h3>
+            <p>Precio: ${{price}}</p>
+            <p>Unidades: {{stock}}</p>
+            <p>Categoria: {{category}}</p>
+            <p>Cantidad: {{quantity}}</p>
+            <button id="addButton" value="{{productId}}">Agregar al Carrito</button>
+        </div>
     {{/each}}
 </div>
-

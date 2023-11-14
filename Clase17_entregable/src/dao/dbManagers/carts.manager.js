@@ -6,7 +6,7 @@ export default class Carts {
   }
 
   getAll = async () => {
-    const carts = await cartsModel.find().populate("products.product");
+    const carts = await cartsModel.find();
     return carts;
   };
 
@@ -21,13 +21,13 @@ export default class Carts {
   };
 
   updateProducts = async (id, products) => {
-    const productsToAdd = products.map((key) => ({ _id: key }));
     const result = await cartsModel.updateOne(
       { _id: id },
       {
-        $addToSet: { products: { $each: productsToAdd } },
+        products: products,
       }
     );
+
     return result;
   };
 
@@ -41,23 +41,27 @@ export default class Carts {
 
   updateOneProduct = async (id, pid, quantity) => {
     const result = await cartsModel.updateOne(
-      { _id: id, "products._id": pid }, // Encuentra el carrito y el producto
+      { _id: id, "products.product": pid }, // Encuentra el carrito y el producto
+
       {
         $set: { "products.$.quantity": quantity }, // Actualiza la cantidad
       }
     );
+
     return result;
   };
 
   deleteCartProduct = async (id, pid) => {
-    const cart = await cartsModel.findOne({ _id: id }); // find cart
-    cart.products.pull({ _id: pid });
-    const result = await cart.save();
-    return result;
+    const cart = await cartsModel.updateOne(
+      { _id: id },
+      { $pull: { products: { product: { _id: pid } } } }
+    );
+
+    return cart;
   };
 
-  deleteCart = async (id) => {
-    const result = await cartsModel.deleteOne({ _id: id });
+  deleteCart = async (cid) => {
+    const result = await cartsModel.updateOne({ _id: cid }, { products: [] });
     return result;
   };
 }

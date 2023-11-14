@@ -42,12 +42,24 @@ router.get("/products", async (req, res) => {
 router.get("/carts/:cid", async (req, res) => {
   try {
     const { cid } = req.params;
-    const carts = await cartsManager.getOne(cid);
-    const products = carts.products;
-    console.dir(carts);
-    res.render("carts", { carts });
+    const cart = await cartsManager.getOne(cid);
+    const products = cart?.[0]?.products || [];
+    console.log(JSON.stringify(products, null, "\t"));
+
+    // Transforma tus datos antes de pasarlos a la vista
+    const transformedProducts = products.map((item) => ({
+      title: item.product.title,
+      price: item.product.price,
+      stock: item.product.stock,
+      category: item.product.category,
+      quantity: item.quantity,
+      productId: item.product._id,
+    }));
+
+    res.render("carts", { products: transformedProducts });
   } catch (error) {
     console.error(error.message);
+    res.status(500).send("Error interno del servidor");
   }
 });
 
