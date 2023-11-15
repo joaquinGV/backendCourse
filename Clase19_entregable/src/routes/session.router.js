@@ -1,5 +1,5 @@
 import { Router } from "express";
-import usersModel from "../dao/dbManagers/models/users.model.js";
+import { usersModel } from "../dao/dbManagers/models/users.model.js";
 
 const router = Router();
 
@@ -40,6 +40,7 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     const user = await usersModel.findOne({ email, password });
+    console.log(user);
 
     if (!user) {
       return res
