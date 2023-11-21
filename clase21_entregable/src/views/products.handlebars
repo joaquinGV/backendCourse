@@ -1,0 +1,31 @@
+<div>
+
+    <h3>Bienvenido {{user.name}}</h3>
+    {{!-- {{#isEqual user.role "admin"}}
+    <p>Eres Admin</p>
+    {{/isEqual}} --}}
+
+
+    <a href="/api/sessions/logout"><button>Salir</button></a>
+
+    {{#each products}}
+        {{#if this.status}}
+            <div class="productData">
+                <h3>{{this.title}}</h3>
+                <p>Precio: ${{this.price}}</p>
+                <p>Unidades: {{this.stock}}</p>
+                <p>Categoria: {{this.category}}</p>
+                <button id="addButton" value={{this._id}}>Agregar al Carrito</button>
+             </div>
+        {{/if}}
+    {{/each}}
+
+    {{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
+    {{/if}}
+    <p>Pagina actual: {{page}} de {{totalPages}}</p>
+    {{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
+    {{/if}}
+</div>
+
