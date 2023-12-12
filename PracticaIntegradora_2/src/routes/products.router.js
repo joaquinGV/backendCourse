@@ -12,7 +12,7 @@ export default class ProductsRouter extends Router {
     // get all product
     this.get(
       "/",
-      [accessRolesEnum.ADMIN],
+      [accessRolesEnum.USER, accessRolesEnum.ADMIN],
       passportStrategiesEnum.JWT,
       this.getAll
     );

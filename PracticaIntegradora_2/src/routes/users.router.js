@@ -10,6 +10,14 @@ export default class UsersRouter extends Router {
   }
 
   init() {
+    this.get(
+      "/",
+      [accessRolesEnum.PUBLIC],
+      passportStrategiesEnum.NOTHING,
+      async (req, res) => {
+        res.sendSuccess("get working");
+      }
+    );
     this.post(
       "/login",
       [accessRolesEnum.PUBLIC],
@@ -27,7 +35,7 @@ export default class UsersRouter extends Router {
       [accessRolesEnum.PUBLIC],
       passportStrategiesEnum.GITHUB,
       async (req, res) => {
-        res.send({ status: "success", message: "user registered" });
+        res.sendSuccess("Logged with github");
       }
     );
     // Login with Github
@@ -37,11 +45,15 @@ export default class UsersRouter extends Router {
       passportStrategiesEnum.GITHUB,
       async (req, res) => {
         req.user = {
-          name: `${req.user.first_name} ${req.user.last_name}`,
+          first_name: `${req.user.first_name} ${req.user.last_name}`,
           email: req.user.email,
           age: req.user.age,
           role: req.user.role,
         };
+
+        const accessToken = generateToken(req.user);
+
+        res.sendSuccess(accessToken);
         res.redirect("/");
       }
     );
@@ -82,11 +94,14 @@ export default class UsersRouter extends Router {
         ...req.body,
       };
 
+
+      console.log(newUser);
+
       newUser.password = hashedPassword;
 
       const result = await this.usersManager.save(newUser);
 
-      res.sendSuccessNewResourse(result);
+      res.sendSucessNewResource(result);
     } catch (error) {
       res.sendServerError(error.message);
     }
