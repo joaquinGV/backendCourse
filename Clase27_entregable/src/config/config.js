@@ -24,7 +24,4 @@ const configs = {
   githubClientId: process.env.GITHUB_CLIENT_ID,
   githubSecret: process.env.GITHUB_SECRET,
 };
-
-console.log(configs);
-
 export default configs;
