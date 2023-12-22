@@ -5,6 +5,7 @@ const cartsManager = new Carts();
 const getAll = async () => {
   const cart = await cartsManager.getAll();
   return cart;
+  
 };
 const getOne = async (cid) => {
   const cart = await cartsManager.getOne(cid);

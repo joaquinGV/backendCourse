@@ -1,12 +1,14 @@
-import {
-  getAllProducts,
-  createProduct,
-  updateProductData,
-} from "../service/products.service.js";
+
+import { Products } from "../dao/factory.js";
+import ProductsRepository from "../repositories/products.repository.js";
+
+const ProductsDao = new Products();
+const productsRepository = new ProductsRepository(ProductsDao);
+
 // Get all products
 const getAll = async (req, res) => {
   try {
-    const products = await getAllProducts();
+    const products = await productsRepository.getAllProducts();
     res.sendSuccess(products);
   } catch (error) {
     res.sendServerError(error.message);
@@ -37,7 +39,7 @@ const newProduct = async (req, res) => {
       res.sendClientError("Incomplete data");
     }
 
-    const result = await createProduct({
+    const result = await productsRepository.createProduct({
       title,
       description,
       code,
@@ -79,7 +81,7 @@ const updateProduct = async (req, res) => {
     ) {
       res.sendClientError("Imcomplete data");
     }
-    const result = await updateProductData(pid, {
+    const result = await productsRepository.updateProduct(pid, {
       title,
       description,
       code,

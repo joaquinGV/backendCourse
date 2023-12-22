@@ -1,6 +1,12 @@
 import { getUser, saveUser } from "../service/users.service.js";
 import { createHash, generateToken, isValidPassword } from "../utils.js";
 
+import { Users } from "../dao/factory.js";
+import UsersRepository from "../repositories/users.repository.js";
+
+const UsersDao = new Users();
+const usersRepository = new UsersRepository(UsersDao);
+
 const register = async (req, res) => {
   try {
     const { first_name, last_name, role, email, password } = req.body;
@@ -9,7 +15,7 @@ const register = async (req, res) => {
       return res.sendClientError("incomplete values");
     }
 
-    const existsUser = await getUser(email);
+    const existsUser = await usersRepository.getUser(email);
 
     if (existsUser) {
       return res.sendClientError("user already exists");
@@ -21,11 +27,11 @@ const register = async (req, res) => {
       ...req.body,
     };
 
-    console.log(newUser);
+    // console.log(newUser);
 
     newUser.password = hashedPassword;
 
-    const result = await saveUser(newUser);
+    const result = await usersRepository.saveUser(newUser);
 
     res.sendSucessNewResource(result);
   } catch (error) {
@@ -41,7 +47,7 @@ const login = async (req, res) => {
       return res.sendClientError("incomplete values");
     }
 
-    const user = await getUser(email);
+    const user = await usersRepository.getUser(email);
 
     if (!user) {
       return res.sendClientError("incorrect credentials");
@@ -61,6 +67,8 @@ const login = async (req, res) => {
   }
 };
 
+// Github Login method
+// Not working properly
 const githubCallback = async (req, res) => {
   req.user = {
     first_name: `${req.user.first_name} ${req.user.last_name}`,
