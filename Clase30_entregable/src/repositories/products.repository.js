@@ -28,4 +28,10 @@ export default class ProductsRepository {
     });
     return result;
   };
+
+  // Delete one product
+  deleteProduct = async (pid) => {
+    const product = await this.dao.delete(pid);
+    return product;
+  }
 }

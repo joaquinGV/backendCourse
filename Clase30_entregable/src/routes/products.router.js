@@ -6,6 +6,7 @@ import {
   newProduct,
   updateProduct,
   getOne,
+  deleteProduct
 } from "../controllers/products.controller.js";
 
 export default class ProductsRouter extends Router {
@@ -42,5 +43,14 @@ export default class ProductsRouter extends Router {
       passportStrategiesEnum.JWT,
       updateProduct
     );
+    // Delete a product data
+    this.delete(
+      "/:pid",
+      [accessRolesEnum.ADMIN],
+      passportStrategiesEnum.JWT,
+      deleteProduct
+    );
   }
 } // end
+
+

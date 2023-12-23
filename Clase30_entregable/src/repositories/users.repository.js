@@ -7,7 +7,7 @@ export default class UsersRepository {
 
   getUser = async (email) => {
     const user = await this.dao.getByEmail(email);
-    const result = new UsersDto(user);
+    const result = user !== null && new UsersDto(user);
     return result;
   };
 
@@ -15,4 +15,6 @@ export default class UsersRepository {
     const result = await this.dao.save(newUser);
     return result;
   };
+
+
 }

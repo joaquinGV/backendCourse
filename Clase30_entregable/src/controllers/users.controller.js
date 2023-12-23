@@ -1,5 +1,7 @@
 import { createHash, generateToken, isValidPassword } from "../utils.js";
 
+import { registerUser } from "../service/users.service.js";
+
 import { Users } from "../dao/factory.js";
 import UsersRepository from "../repositories/users.repository.js";
 
@@ -25,15 +27,13 @@ const register = async (req, res) => {
     const newUser = {
       ...req.body,
     };
-
-    // console.log(newUser);
-
     newUser.password = hashedPassword;
 
-    const result = await usersRepository.saveUser(newUser);
+    const result = await registerUser(newUser);
 
     res.sendSucessNewResource(result);
   } catch (error) {
+    console.log("Error Message");
     res.sendServerError(error.message);
   }
 };

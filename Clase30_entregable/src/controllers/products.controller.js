@@ -1,4 +1,3 @@
-
 import { Products } from "../dao/factory.js";
 import ProductsRepository from "../repositories/products.repository.js";
 
@@ -108,4 +107,15 @@ const updateProduct = async (req, res) => {
   }
 };
 
-export { getAll,getOne, newProduct, updateProduct };
+// Delete one products
+const deleteProduct = async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const product = await productsRepository.deleteProduct(pid);
+    res.sendSuccess(product);
+  } catch (error) {
+    res.sendServerError(error.message);
+  }
+};
+
+export { getAll, getOne, newProduct, updateProduct, deleteProduct };
