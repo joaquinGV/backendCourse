@@ -4,12 +4,13 @@ import {
   getAll,
   getOne,
   save,
+  cartPurchase,
   putProducts,
   addOneProduct,
   putQuantity,
   deleteProduct,
   deleteCart,
-} from "../controllers/carts.controller.js";
+} from "../controllers/carts.controller.js";  
 
 export default class CartsRouter extends Router {
   constructor() {
@@ -28,8 +29,16 @@ export default class CartsRouter extends Router {
       getOne
     );
 
+    // Purchase the cart of the user
+    this.get(
+      "/:cid/purchase",
+      [accessRolesEnum.ADMIN],
+      passportStrategiesEnum.JWT, 
+      cartPurchase
+    );
+
     // Create a new cart
-    this.post("/", [accessRolesEnum.PUBLIC], passportStrategiesEnum.JWT, save);
+    // this.post("/", [accessRolesEnum.PUBLIC], passportStrategiesEnum.JWT, save);
 
     // Update Cart with products
     this.put(

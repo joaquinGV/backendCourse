@@ -1,7 +1,7 @@
 import { Carts, Products } from "../dao/factory.js";
 import CartsRepository from "../repositories/carts.repository.js";
 import ProductsRepository from "../repositories/products.repository.js";
-import { addProduct } from "../service/carts.service.js";
+import { addProduct, purchase } from "../service/carts.service.js";
 
 const CartsDao = new Carts();
 const ProductsDao = new Products();
@@ -29,6 +29,17 @@ const getOne = async (req, res) => {
 const save = async (req, res) => {
   try {
     const result = await cartsRepository.save();
+    res.sendSucessNewResource(result);
+  } catch (error) {
+    res.sendServerError(error.message);
+  }
+};
+
+const cartPurchase = async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const { user } = req.user;
+    const result = await purchase(cid, user);
     res.sendSucessNewResource(result);
   } catch (error) {
     res.sendServerError(error.message);
@@ -118,6 +129,7 @@ export {
   getAll,
   getOne,
   save,
+  cartPurchase,
   putProducts,
   addOneProduct,
   putQuantity,
