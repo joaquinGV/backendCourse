@@ -17,7 +17,7 @@ const generatePurchase = async (user, amount) => {
   };
 
   //usar el ticketRepository para guardad el ticket generado
-  await ticketsRepository.save(newTicket);
+  return await ticketsRepository.save(newTicket);
 };
 
 export { generatePurchase };

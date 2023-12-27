@@ -38,7 +38,7 @@ const save = async (req, res) => {
 const cartPurchase = async (req, res) => {
   try {
     const { cid } = req.params;
-    const { user } = req.user;
+    const user = req.user;
     const result = await purchase(cid, user);
     res.sendSucessNewResource(result);
   } catch (error) {
