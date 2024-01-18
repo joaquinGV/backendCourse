@@ -56,6 +56,13 @@ if (config.environment === "DEVELOPMENT") {
       new winston.transports.File({
         filename: "logs/errors.log",
         level: "error",
+        format: winston.format.combine(
+          winston.format.colorize({
+            all: true,
+            colors: customLevelOptions.colors,
+          }),
+          winston.format.simple()
+        ),
       }),
     ],
   });
