@@ -33,7 +33,7 @@ export const changePasswordHtml = (token) => {
             <h2>Login</h2>
             
             <p class="change-message">¡Hola! Has solicitado un cambio de contraseña. Por favor, verifica tus credenciales.</p>
-            <p>Haz click aquí para cambiar tu contraseña: <a href="http://localhost:8080/password-email/${token}">Cambiar contraseña</a></p>
+            <p>Haz click aquí para cambiar tu contraseña: <a href="http://localhost:8080/password-change?token=${token}">Cambiar contraseña</a></p>
         </div>
     </body>
     </html>`;

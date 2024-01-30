@@ -6,7 +6,7 @@ import {
   updateRole,
   githubCallback,
   logout,
-  checkAndSend,
+  checkAndSend, updatePassword
 } from "../controllers/users.controller.js";
 
 export default class UsersRouter extends Router {
@@ -73,5 +73,11 @@ export default class UsersRouter extends Router {
       checkAndSend
     );
 
+    this.post(
+      "/pass-update",
+      [accessRolesEnum.PUBLIC],
+      passportStrategiesEnum.NOTHING,
+      updatePassword
+    );
   }
 }

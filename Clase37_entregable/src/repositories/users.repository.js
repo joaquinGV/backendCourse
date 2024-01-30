@@ -11,12 +11,13 @@ export default class UsersRepository {
     return result;
   };
 
-  updateUser = async (email, role) => {
-    await this.dao.updateUser(email, role);
+  updateUser = async (email, data) => {
+    await this.dao.updateUser(email, data);
     const user = await this.dao.getByEmail(email);
     const result = user !== null && new UsersDto(user);
     return result;
   };
+
 
   saveUser = async (newUser) => {
     const result = await this.dao.save(newUser);

@@ -1,4 +1,4 @@
-const form = document.getElementById("userId");
+const form = document.getElementById("sendEmailPassword");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -6,6 +6,9 @@ form.addEventListener("submit", async (e) => {
   const obj = {};
 
   formData.forEach((value, key) => (obj[key] = value));
+  // console.log(obj)
+
+  const texto = document.getElementById("sendMessage");
 
   // Hacer peticion para validar usuario y enviar correo
   const respuesta = await fetch("/api/users/pass-recovery", {
@@ -16,17 +19,15 @@ form.addEventListener("submit", async (e) => {
       "Content-Type": "application/json",
     },
   });
-  const data = respuesta.json();
+  // const data = respuesta.json();
 
   if (respuesta.status === 200) {
     // Mostrar en front mensaje exitoso
-    console.log(data);
-    const texto = document.getElementById("sendMessage");
     texto.innerHTML =
       "Texto enviado exitosamente, revise su bandeja de entrada";
   } else {
     // Mostrar en front mensaje de fallo
-    const texto = document.getElementById("sendMessage");
+
     texto.innerHTML = "Ocurrio un problema enviando su correo";
   }
 });

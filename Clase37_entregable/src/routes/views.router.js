@@ -4,6 +4,7 @@ import Products from "../dao/dbManagers/products.manager.js";
 import { accessRolesEnum, passportStrategiesEnum } from "../config/enums.js";
 import { productsModel } from "../dao/dbManagers/models/products.model.js";
 import { sendEmail } from "../service/mail.service.js";
+import { decodeToken } from "../utils.js";
 
 export default class ViewsRouter extends Router {
   constructor() {
@@ -59,16 +60,16 @@ export default class ViewsRouter extends Router {
     //Send email to change password
     this.get(
       "/password-email",
-      [accessRolesEnum.USER],
-      passportStrategiesEnum.JWT,
+      [accessRolesEnum.PUBLIC],
+      passportStrategiesEnum.NOTHING,
       this.passwordEmail
     );
 
     //Send email to change password
     this.get(
-      "/password-email/:jwt",
-      [accessRolesEnum.USER],
-      passportStrategiesEnum.JWT,
+      "/password-change",
+      [accessRolesEnum.PUBLIC],
+      passportStrategiesEnum.NOTHING,
       this.changePasword
     );
   }
@@ -129,7 +130,7 @@ export default class ViewsRouter extends Router {
 
   async passwordEmail(req, res) {
     try {
-      res.render("forgotpassword");
+      res.render("forgotPassword");
     } catch (error) {
       res.sendServerError(error.message);
     }
@@ -137,9 +138,17 @@ export default class ViewsRouter extends Router {
 
   async changePasword(req, res) {
     try {
-      res.render("changePassword");
-      const { jwt } = req.params;
-      const user = sendEmail(jwt);
+      const token = req.query.token;
+      const data = decodeToken(token, req);
+      // req.logger.info(data);
+      if (!data) {
+        res.status(404).render("404", {
+          title: "Página no encontrada, su token expiro",
+        });
+      }
+      res.render("changePassword", {
+        name: data?.user?.name,
+      });
     } catch (error) {
       res.sendServerError(error.message);
     }

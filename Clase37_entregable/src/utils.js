@@ -13,16 +13,18 @@ const createHash = (password) =>
 const isValidPassword = (plainPassword, hashedPassword) =>
   bcrypt.compareSync(plainPassword, hashedPassword);
 
-const generateToken = (user) => {
-  const token = jwt.sign({ user }, configs.privateKeyJWT, { expiresIn: "24h" });
+const generateToken = (user, time = "24h") => {
+  const token = jwt.sign({ user }, configs.privateKeyJWT, { expiresIn: time });
   return token;
 };
 
-const decodeToken = (token) => {
+const decodeToken = (token, req) => {
   try {
     const decodedToken = jwt.verify(token, configs.privateKeyJWT);
-    const expirationDate = new Date(decodeToken.exp * 1000);
+    const expirationDate = new Date(decodedToken.exp * 1000);
     const currentDate = new Date();
+
+    // req.logger.info(decodedToken);
 
     if (currentDate < expirationDate) {
       return decodedToken;

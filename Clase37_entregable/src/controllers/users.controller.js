@@ -1,4 +1,9 @@
-import { createHash, generateToken, isValidPassword } from "../utils.js";
+import {
+  createHash,
+  decodeToken,
+  generateToken,
+  isValidPassword,
+} from "../utils.js";
 import { registerUser } from "../service/users.service.js";
 import EErrors from "../middlewares/errors/enums.js";
 import CustomError from "../middlewares/errors/CustomError.js";
@@ -138,10 +143,13 @@ const checkAndSend = async (req, res) => {
       return res.sendClientError("User not found");
     }
 
-    const Token = generateToken({
-      name: user.name + user.last_name,
-      email: user.email,
-    });
+    const Token = generateToken(
+      {
+        name: user?.name,
+        email: user.email,
+      },
+      "1h"
+    );
 
     const emailPasswordChange = {
       to: user.email,
@@ -150,11 +158,50 @@ const checkAndSend = async (req, res) => {
     };
 
     sendEmail(emailPasswordChange);
-
-    res.sendSuccess(`Correo enviado exitosamente a ${user.email}`);
+    res
+      // .cookie("pass-recovery", Token, { httpOnly: true, maxAge: 3600000 })
+      .sendSuccess(`Correo enviado exitosamente a ${user.email}`);
   } catch (error) {
     res.sendServerError(error.message);
   }
 };
 
-export { register, login, updateRole, githubCallback, logout, checkAndSend };
+const updatePassword = async (req, res) => {
+  try {
+    const { token, password } = req.body;
+    const { user } = decodeToken(token);
+    req.logger.debug(user);
+    if (!user) {
+      req.logger.error("Token expired");
+      res.sendServerError("Token expired");
+    }
+    const dbUser = await usersRepository.getUser(user.email);
+    req.logger.debug(dbUser);
+    if (!dbUser) res.sendServerError("User not found");
+    const isNew = isValidPassword(password, dbUser.password);
+    if (isNew) {
+      req.logger.error(
+        "La nueva contraseña no puede ser la misma que la anterior"
+      );
+      res.sendNotAcceptable(
+        "La nueva contraseña no puede ser la misma que la anterior"
+      );
+    }
+    const newPassword = createHash(password);
+    await usersRepository.updateUser(dbUser.email, { password: newPassword });
+    res.sendSuccess("Contraseña actualizada con exito");
+  } catch (error) {
+    req.logger.error(error.message);
+    res.sendServerError(error.message);
+  }
+};
+
+export {
+  register,
+  login,
+  updateRole,
+  githubCallback,
+  logout,
+  checkAndSend,
+  updatePassword,
+};

@@ -10,8 +10,8 @@ export default class Users {
     return user;
   };
 
-  updateUser = async (email, role) => {
-    const user = await usersModel.updateOne({ email }, role);
+  updateUser = async (email, data) => {
+    const user = await usersModel.updateOne({ email }, data);
     return user;
   };
 
