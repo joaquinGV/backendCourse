@@ -73,7 +73,6 @@ describe("--Testing del módulo de Products--", () => {
       .send(newProduct);
 
     newProductId = response.body.data._id;
-    console.log(response.body.data._id);
 
     expect(response.statusCode).to.be.eql(201);
     expect(response.body.data.owner).to.be.eql(premium.email);
