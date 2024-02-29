@@ -6,8 +6,11 @@ import {
   updateRole,
   githubCallback,
   logout,
-  checkAndSend, updatePassword
+  checkAndSend,
+  updatePassword,
+  updateDocuments,
 } from "../controllers/users.controller.js";
+import { uploader } from "../utils.js";
 
 export default class UsersRouter extends Router {
   constructor() {
@@ -34,6 +37,18 @@ export default class UsersRouter extends Router {
       [accessRolesEnum.PUBLIC],
       passportStrategiesEnum.NOTHING,
       register
+    );
+    this.post(
+      "/:uid/documents",
+      [accessRolesEnum.USER, accessRolesEnum.PREMIUM],
+      passportStrategiesEnum.JWT,
+      // uploader.single("thumbnail"),
+      uploader.fields([
+        { name: "identificacion", maxCount: 1 },
+        { name: "comprobante", maxCount: 1 },
+        { name: "domicilio", maxCount: 1 },
+      ]),
+      updateDocuments
     );
 
     this.get(

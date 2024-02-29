@@ -51,4 +51,3 @@ userSchema.pre(["find", "findOne"], function () {
 });
 
 export const usersModel = mongoose.model(userCollection, userSchema);
-ee;

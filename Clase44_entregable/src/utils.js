@@ -5,18 +5,43 @@ import jwt from "jsonwebtoken";
 import configs from "./config/config.js";
 import path from "path";
 import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const __mainDirname = path.join(__dirname, ".."); // export de ruta de proyecto general
 
-
+// Configuración de Multer para manejar múltiples archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, `${__dirname}/public/img/pets`);
+    let uploadPath = "";
+
+    // Determinar la carpeta de destino según el tipo de documento
+    switch (file.fieldname) {
+      case "identificacion":
+        uploadPath = `${__dirname}/public/documents/identificacion`;
+        break;
+      case "comprobante":
+        uploadPath = `${__dirname}/public/documents/comprobante`;
+        break;
+      case "domicilio":
+        uploadPath = `${__dirname}/public/documents/domicilio`;
+        break;
+      case "perfil":
+        uploadPath = `${__dirname}/public/profiles`;
+        break;
+      case "producto":
+        uploadPath = `${__dirname}/public/products`;
+        break;
+      default:
+        uploadPath = `${__dirname}/public/documents/files`; // Carpeta por defecto si no se especifica un tipo de documento válido
+    }
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    const uuid = uuidv4();
+    const filename = `${uuid}-${file.originalname}`;
+    cb(null, filename);
   },
 });
 
@@ -66,4 +91,5 @@ export {
   isValidPassword,
   generateToken,
   decodeToken,
+  uploader,
 };
