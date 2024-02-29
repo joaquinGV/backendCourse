@@ -53,7 +53,6 @@ const login = async (req, res) => {
         message: "Error trying to create user",
         code: EErrors.INVALID_TYPE_ERROR,
       });
-      // return res.sendClientError("incomplete values");
     }
 
     const user = await usersRepository.getUser(email);

@@ -7,6 +7,7 @@ export default class UsersRepository {
 
   getUser = async (email) => {
     const user = await this.dao.getByEmail(email);
+    await this.updateUser(email, { last_connection: new Date().toISOString() });
     const result = user !== null && new UsersDto(user);
     return result;
   };
