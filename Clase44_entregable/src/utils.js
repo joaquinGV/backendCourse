@@ -21,8 +21,8 @@ const storage = multer.diskStorage({
       case "identificacion":
         uploadPath = `${__dirname}/public/documents/identificacion`;
         break;
-      case "comprobante":
-        uploadPath = `${__dirname}/public/documents/comprobante`;
+      case "cuenta":
+        uploadPath = `${__dirname}/public/documents/cuenta`;
         break;
       case "domicilio":
         uploadPath = `${__dirname}/public/documents/domicilio`;

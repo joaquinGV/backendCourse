@@ -45,8 +45,10 @@ export default class UsersRouter extends Router {
       // uploader.single("thumbnail"),
       uploader.fields([
         { name: "identificacion", maxCount: 1 },
-        { name: "comprobante", maxCount: 1 },
+        { name: "cuenta", maxCount: 1 },
         { name: "domicilio", maxCount: 1 },
+        { name: "perfil", maxCount: 1 },
+        { name: "products", maxCount: 1 },
       ]),
       updateDocuments
     );

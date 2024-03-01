@@ -89,15 +89,17 @@ const updateRole = async (req, res) => {
       res.sendNotFound("Usuario no encontrado");
     }
 
-    const expectedDocuments = ["domicilio", "comprobante", "identificacion"];
+    if (user.role === "USER") {
+      const expectedDocuments = ["domicilio", "cuenta", "identificacion"];
 
-    // Obtener los nombres de los documentos del user
-    const userDocs = user.documents.map((obj) => obj.name);
+      // Obtener los nombres de los documentos del user
+      const userDocs = user.documents.map((obj) => obj.name);
 
-    for (const docName of expectedDocuments) {
-      if (!userDocs.includes(docName)) {
-        res.sendUnauthorized("Documentation not completed");
-        return;
+      for (const docName of expectedDocuments) {
+        if (!userDocs.includes(docName)) {
+          res.sendUnauthorized("Documentation not completed");
+          return;
+        }
       }
     }
 
