@@ -3,6 +3,7 @@ import { accessRolesEnum, passportStrategiesEnum } from "../config/enums.js";
 import {
   register,
   login,
+  getEmail,
   updateRole,
   githubCallback,
   logout,
@@ -10,7 +11,9 @@ import {
   updatePassword,
   updateDocuments,
   getAllUsers,
-  deleteNoActive
+  deleteNoActive,
+  deleteUser,
+  updateUser,
 } from "../controllers/users.controller.js";
 import { uploader } from "../utils.js";
 
@@ -27,6 +30,12 @@ export default class UsersRouter extends Router {
       async (req, res) => {
         res.sendSuccess("get Users working");
       }
+    );
+    this.get(
+      "/email",
+      [accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN],
+      passportStrategiesEnum.JWT,
+      getEmail
     );
     this.post(
       "/login",
@@ -106,6 +115,18 @@ export default class UsersRouter extends Router {
       getAllUsers
     );
 
+    this.put(
+      "/update-role",
+      [accessRolesEnum.ADMIN],
+      passportStrategiesEnum.JWT,
+      updateUser
+    );
+    this.delete(
+      "/delete-user/:email",
+      [accessRolesEnum.ADMIN],
+      passportStrategiesEnum.JWT,
+      deleteUser
+    );
     this.delete(
       "/no-active",
       [accessRolesEnum.ADMIN],

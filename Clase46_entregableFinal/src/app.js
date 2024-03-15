@@ -1,6 +1,7 @@
 // Imports of express configuration
 import express from "express";
 import handlebars from "express-handlebars";
+import cors from "cors";
 // import mongoose from "mongoose";
 import { __dirname, __mainDirname } from "./utils.js";
 import initializePassport from "./config/passport.js";
@@ -56,7 +57,6 @@ app.use(passport.initialize());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(`${__dirname}/public`));
 
 app.engine("handlebars", handlebars.engine());
@@ -64,6 +64,7 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
 try {
+  app.use(cors());
   app.use("/", viewsRouter.getRouter());
   app.use("/api/carts", cartsRouter.getRouter());
   app.use("/api/products", productsRouter.getRouter());

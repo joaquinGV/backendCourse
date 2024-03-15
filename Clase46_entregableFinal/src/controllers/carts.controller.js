@@ -78,8 +78,9 @@ const addOneProduct = async (req, res) => {
       res.sendClientError("You can't add your own products");
     }
 
-    const result = addProduct(cid, pid, quantity);
-    res.sendSuccess("Producto modificado correctamente", result);
+    const result = await addProduct(cid, pid, quantity);
+    res.sendSuccess(result);
+    // res.sendSuccess(`Producto modificado correctamente ${result}`);
   } catch (error) {
     req.logger.error(error.message);
     res.sendServerError("Error en controller", error.message);

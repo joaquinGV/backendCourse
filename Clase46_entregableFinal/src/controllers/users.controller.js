@@ -16,9 +16,9 @@ import mongoose from "mongoose";
 
 const register = async (req, res) => {
   try {
-    const { first_name, last_name, role, email, password } = req.body;
+    const { first_name, last_name, email, password } = req.body;
 
-    if (!first_name || !last_name || !role || !email || !password) {
+    if (!first_name || !last_name || !email || !password) {
       return res.sendClientError("incomplete values");
     }
 
@@ -246,6 +246,18 @@ const updatePassword = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { email, role } = req.body;
+    if (!email || !role) res.sendClientError("No user found");
+    const user = await usersRepository.updateUser(email, { role: role });
+    res.sendSuccess(user);
+  } catch (error) {
+    req.logger.error(error.message);
+    res.sendServerError(error.message);
+  }
+};
+
 const getAllUsers = async (req, res) => {
   try {
     const allUsers = await usersRepository.getAllUsers();
@@ -302,6 +314,30 @@ const deleteNoActive = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const { email } = req.params;
+    if (!email) res.sendNotFound("No user found");
+    const user = await usersRepository.deleteUser(email);
+    res.sendSuccess(user);
+  } catch (error) {
+    req.logger.error(error.message);
+    res.sendServerError(error.message);
+  }
+};
+
+const getEmail = async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user) res.sendNotFound("No user found");
+    const userData = await usersRepository.getUserData(user.email);
+    res.sendSuccess(userData.cart_id);
+  } catch (error) {
+    req.logger.error(error.message);
+    res.sendServerError(error.message);
+  }
+};
+
 export {
   register,
   login,
@@ -313,4 +349,7 @@ export {
   updateDocuments,
   getAllUsers,
   deleteNoActive,
+  deleteUser,
+  updateUser,
+  getEmail,
 };
