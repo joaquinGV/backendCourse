@@ -18,11 +18,14 @@ import ProductsRouter from "./routes/products.router.js";
 import CartsRouter from "./routes/carts.router.js";
 import MessagesRouter from "./routes/messages.router.js";
 import MockingProductsRouter from "./routes/mockingproduct.router.js";
-import errorHandler from "./middlewares/errors/index.js";
 import LoggerTestRouter from "./routes/loggerTest.router.js";
 import cookieParser from "cookie-parser";
 
 console.log(`La aplicación se está ejecutando en el puerto ${configs.port}`);
+const allowedOrigins = [
+  "http://localhost:5174",
+  "https://front-backend.netlify.app",
+];
 
 const app = express();
 app.use(addLogger);
@@ -64,7 +67,12 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
 try {
-  app.use(cors());
+  app.use(
+    cors({
+      origin: allowedOrigins,
+      optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    })
+  );
   app.use("/", viewsRouter.getRouter());
   app.use("/api/carts", cartsRouter.getRouter());
   app.use("/api/products", productsRouter.getRouter());
