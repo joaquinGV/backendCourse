@@ -48,7 +48,7 @@ export default class CartsRouter extends Router {
     // Purchase the cart of the user
     this.post(
       "/:cid/purchase",
-      [accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN],
+      [accessRolesEnum.USER, accessRolesEnum.PREMIUM],
       passportStrategiesEnum.JWT,
       cartPurchase
     );

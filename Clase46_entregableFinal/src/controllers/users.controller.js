@@ -14,6 +14,7 @@ import { changePasswordHtml } from "../utils/changePassword.html.js";
 import { accountDeletedHtml } from "../utils/accountDeleted.html.js";
 import mongoose from "mongoose";
 
+// Register a new user
 const register = async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
@@ -44,6 +45,7 @@ const register = async (req, res) => {
   }
 };
 
+// Process to login an existing user
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -83,6 +85,7 @@ const login = async (req, res) => {
   }
 };
 
+// Process to update user role to premium
 const updateRole = async (req, res) => {
   try {
     const user = await usersRepository.getUserData(req.user.email);
@@ -117,6 +120,7 @@ const updateRole = async (req, res) => {
   }
 };
 
+// Process to update and save a document from the user.
 const updateDocuments = async (req, res) => {
   try {
     // Obtener datos del usuario y sus documentos
@@ -179,6 +183,7 @@ const logout = async (req, res) => {
   });
 };
 
+// Process to send password change email.
 const checkAndSend = async (req, res) => {
   try {
     const { email } = req.body;
@@ -216,6 +221,7 @@ const checkAndSend = async (req, res) => {
   }
 };
 
+// Process to update password by received email
 const updatePassword = async (req, res) => {
   try {
     const { token, password } = req.body;
@@ -246,6 +252,7 @@ const updatePassword = async (req, res) => {
   }
 };
 
+// Process to update user password
 const updateUser = async (req, res) => {
   try {
     const { email, role } = req.body;
@@ -258,6 +265,7 @@ const updateUser = async (req, res) => {
   }
 };
 
+// Get all users
 const getAllUsers = async (req, res) => {
   try {
     const allUsers = await usersRepository.getAllUsers();
@@ -273,6 +281,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// Delete inactive users
 const deleteNoActive = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -296,7 +305,6 @@ const deleteNoActive = async (req, res) => {
       await usersRepository.deleteUser(user.email);
       return;
     });
-    // emailPromises.push(await usersRepository.deleteOld());
     await Promise.all(emailPromises);
 
     req.logger.info("Correo enviado a todos los usuarios");
@@ -314,6 +322,7 @@ const deleteNoActive = async (req, res) => {
   }
 };
 
+// Delete user by email
 const deleteUser = async (req, res) => {
   try {
     const { email } = req.params;
@@ -326,7 +335,8 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const getEmail = async (req, res) => {
+// Get user by email
+const getCartByEmail = async (req, res) => {
   try {
     const user = req.user;
     if (!user) res.sendNotFound("No user found");
@@ -351,5 +361,5 @@ export {
   deleteNoActive,
   deleteUser,
   updateUser,
-  getEmail,
+  getCartByEmail,
 };

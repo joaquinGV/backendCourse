@@ -3,7 +3,7 @@ import { accessRolesEnum, passportStrategiesEnum } from "../config/enums.js";
 import {
   register,
   login,
-  getEmail,
+  getCartByEmail,
   updateRole,
   githubCallback,
   logout,
@@ -23,6 +23,7 @@ export default class UsersRouter extends Router {
   }
 
   init() {
+    // Simple get to check if API working properly
     this.get(
       "/",
       [accessRolesEnum.PUBLIC],
@@ -31,24 +32,28 @@ export default class UsersRouter extends Router {
         res.sendSuccess("get Users working");
       }
     );
+    // Get the user cart Id by email 
     this.get(
       "/email",
       [accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN],
       passportStrategiesEnum.JWT,
-      getEmail
+      getCartByEmail
     );
+    // Login process of a user
     this.post(
       "/login",
       [accessRolesEnum.PUBLIC],
       passportStrategiesEnum.NOTHING,
       login
     );
+    // Register process of a new user
     this.post(
       "/register",
       [accessRolesEnum.PUBLIC],
       passportStrategiesEnum.NOTHING,
       register
     );
+    // Add documents stored to a user by Id 
     this.post(
       "/:uid/documents",
       [accessRolesEnum.USER, accessRolesEnum.PREMIUM],
@@ -64,12 +69,15 @@ export default class UsersRouter extends Router {
       updateDocuments
     );
 
+    // Change user to premium and viceversa process 
     this.get(
       "/premium/:uid",
       [accessRolesEnum.USER, accessRolesEnum.PREMIUM],
       passportStrategiesEnum.JWT,
       updateRole
     );
+
+    // Process not working to login with github
     this.get(
       "/github",
       [accessRolesEnum.PUBLIC],
@@ -79,14 +87,14 @@ export default class UsersRouter extends Router {
       }
     );
 
-    // Login with Github
+    // Login with Github -- Not Working
     this.get(
       "/github-callback",
       [accessRolesEnum.PUBLIC],
       passportStrategiesEnum.GITHUB,
       githubCallback
     );
-    // Logout with passport
+    // Logout with passport -- Not Working
     this.get(
       "/logout",
       [accessRolesEnum.PUBLIC],
@@ -94,6 +102,7 @@ export default class UsersRouter extends Router {
       logout
     );
 
+    // Process to create password recovery email to user
     this.post(
       "/pass-recovery",
       [accessRolesEnum.PUBLIC],
@@ -101,6 +110,7 @@ export default class UsersRouter extends Router {
       checkAndSend
     );
 
+    // Process to update user password
     this.post(
       "/pass-update",
       [accessRolesEnum.PUBLIC],
@@ -108,6 +118,7 @@ export default class UsersRouter extends Router {
       updatePassword
     );
 
+    // Process to obtain all users 
     this.get(
       "/all-users",
       [accessRolesEnum.ADMIN],
@@ -115,18 +126,21 @@ export default class UsersRouter extends Router {
       getAllUsers
     );
 
+    // Process to update the role of a user 
     this.put(
       "/update-role",
       [accessRolesEnum.ADMIN],
       passportStrategiesEnum.JWT,
       updateUser
     );
+    // Process to delete an user by email 
     this.delete(
       "/delete-user/:email",
       [accessRolesEnum.ADMIN],
       passportStrategiesEnum.JWT,
       deleteUser
     );
+    // Process to delete all inactive users. *
     this.delete(
       "/no-active",
       [accessRolesEnum.ADMIN],

@@ -4,6 +4,8 @@ import {
 } from "../repositories/factoryRepository.js";
 import { addProduct, purchase } from "../service/carts.service.js";
 
+
+// Get All carts
 const getAll = async (req, res) => {
   try {
     const cart = await cartsRepository.getAll();
@@ -13,6 +15,8 @@ const getAll = async (req, res) => {
     res.sendServerError(error.message);
   }
 };
+
+// Get one cart by id
 const getOne = async (req, res) => {
   try {
     const { cid } = req.params;
@@ -24,6 +28,7 @@ const getOne = async (req, res) => {
   }
 };
 
+// Create a new empty cart
 const save = async (req, res) => {
   try {
     const result = await cartsRepository.save();
@@ -33,6 +38,7 @@ const save = async (req, res) => {
   }
 };
 
+// Run shopping process of the cart
 const cartPurchase = async (req, res) => {
   try {
     const { cid } = req.params;
